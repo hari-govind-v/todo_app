@@ -1,4 +1,4 @@
-from models.models import TaskCreate
+from tasks.schemas import TaskCreate
 from enum import Enum
 
 dummy_data = [
