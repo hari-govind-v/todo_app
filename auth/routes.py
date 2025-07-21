@@ -26,4 +26,3 @@ async def login_user(user: UserCreate, db: Session=Depends(get_db)):
         "username": user_db.username,
         "user_id": user_db.id
     }
-

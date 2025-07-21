@@ -9,7 +9,7 @@ from sqlalchemy.exc import SQLAlchemyError
 user_router = APIRouter()
 
 @user_router.get("/", response_model=list[UserRead])
-async def get_all_tasks(db: Session = Depends(get_db)):
+async def get_all_users(db: Session = Depends(get_db)):
     try:
         tasks = db.query(User).all()
         if not tasks: print("no users in db")
