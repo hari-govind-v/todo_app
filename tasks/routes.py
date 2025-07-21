@@ -12,7 +12,7 @@ from todo_app.users.models import User
 
 task_router = APIRouter()
 
-@task_router.post("/tasks")
+@task_router.post("/")
 async def create_task(
     userid: int,
     task: TaskCreate, 
@@ -43,7 +43,7 @@ async def create_task(
     return new_task
 
 
-@task_router.get("/tasks", response_model=list[TaskCreate])
+@task_router.get("/", response_model=list[TaskCreate])
 async def get_all_tasks(
     userid: int,
     db: Session = Depends(get_db), 
@@ -58,7 +58,7 @@ async def get_all_tasks(
         raise HTTPException(status_code=500, detail="Failed to retrieve tasks")
 
 
-@task_router.get("/tasks/{task_id}")
+@task_router.get("/{task_id}")
 async def get_task_by_id(
     userid: int,
     task_id: int, 
@@ -76,7 +76,7 @@ async def get_task_by_id(
     return task
 
 
-@task_router.put("/tasks/{task_id}")
+@task_router.put("/{task_id}")
 async def update_task_by_id(
     userid: int,
     task_id: int, 
@@ -105,7 +105,7 @@ async def update_task_by_id(
         raise HTTPException(status_code=500, detail="Failed to update task")
 
 
-@task_router.delete("/tasks/{task_id}")
+@task_router.delete("/{task_id}")
 async def delete_task_by_id(
     userid: int,
     task_id: int, 
@@ -133,7 +133,7 @@ async def delete_task_by_id(
         raise HTTPException(status_code=500, detail="Failed to delete task")
 
 
-@task_router.patch("/tasks/{task_id}/update_status")
+@task_router.patch("/{task_id}/update_status")
 async def update_task_status(
     userid: int,
     task_id: int, 
