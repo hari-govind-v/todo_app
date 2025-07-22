@@ -3,21 +3,25 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import os
 from dotenv import load_dotenv
+from pydantic import Field
+from pydantic_settings import BaseSettings
 
 load_dotenv()
 
-DB_USER = os.getenv("DB_USER")
-DB_PASSWORD = os.getenv("DB_PASSWORD")
-DB_NAME = os.getenv("DB_NAME")
-DB_HOST = os.getenv("DB_HOST", "localhost")
-DB_PORT = os.getenv("DB_PORT", "5432")
+class AppSettings(BaseSettings):
+    APP_NAME: str = "Todo App"
+    DB_USER: str = Field(...,env="DB_USER")
+    DB_PASSWORD: str = Field(...,env="DB_PASSWORD")
+    DB_NAME: str = Field(...,env="DB_NAME")
+    DB_HOST: str = Field(...,env="DB_HOST")
+    DB_PORT: int = Field(...,env="DB_PORT")
 
-if not all([DB_USER, DB_PASSWORD, DB_NAME]):
-    raise EnvironmentError("DB_USER, DB_PASSWORD, and DB_NAME environment variables must be set.")
+    @property
+    def DATABASE_URL(self) -> str:
+        return f"postgresql://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
 
-DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-
-engine = create_engine(DATABASE_URL)
+settings = AppSettings()
+engine = create_engine(settings.DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine)
 
 Base = declarative_base()
