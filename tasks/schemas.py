@@ -2,15 +2,15 @@ from pydantic import BaseModel
 from enum import Enum
 
 
-class TaskStatus(BaseModel):
+class TaskStatusDTO(BaseModel):
     status: str
 
-class TaskBase(BaseModel):
+class TaskBaseDTO(BaseModel):
     name: str
     description: str
     status: str
 
-class TaskCreate(TaskBase):
+class TaskCreateDTO(TaskBaseDTO):
     id: int
     name: str
     description: str

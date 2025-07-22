@@ -1,9 +1,9 @@
 from pydantic import BaseModel
 
-class UserRead(BaseModel):
+class UserReadDTO(BaseModel):
     id: int
     username: str
 
-class UserCreate(BaseModel):
+class UserCreateDTO(BaseModel):
     username: str
     password: str

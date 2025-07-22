@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 
-from .schemas import TaskCreate, TaskBase, TaskStatus
+from .schemas import TaskCreateDTO, TaskBaseDTO, TaskStatusDTO
 from .models import UserTask
 from todo_app.core.dependencies import get_db
 from todo_app.auth.utils import get_current_user
@@ -15,7 +15,7 @@ task_router = APIRouter()
 @task_router.post("/")
 async def create_task(
     userid: int,
-    task: TaskCreate, 
+    task: TaskCreateDTO, 
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
@@ -43,7 +43,7 @@ async def create_task(
     return new_task
 
 
-@task_router.get("/", response_model=list[TaskCreate])
+@task_router.get("/", response_model=list[TaskCreateDTO])
 async def get_all_tasks(
     userid: int,
     db: Session = Depends(get_db), 
@@ -80,7 +80,7 @@ async def get_task_by_id(
 async def update_task_by_id(
     userid: int,
     task_id: int, 
-    task: TaskBase, 
+    task: TaskBaseDTO, 
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
@@ -137,7 +137,7 @@ async def delete_task_by_id(
 async def update_task_status(
     userid: int,
     task_id: int, 
-    task_status: TaskStatus, 
+    task_status: TaskStatusDTO, 
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):

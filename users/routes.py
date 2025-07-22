@@ -8,7 +8,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 user_router = APIRouter()
 
-@user_router.get("/", response_model=list[UserRead])
+@user_router.get("/", response_model=list[UserReadDTO])
 async def get_all_users(db: Session = Depends(get_db)):
     try:
         tasks = db.query(User).all()
@@ -17,8 +17,8 @@ async def get_all_users(db: Session = Depends(get_db)):
     except SQLAlchemyError:
         raise HTTPException(status_code=500, detail="Failed to retrieve users")
 
-@user_router.post("/users/register", response_model=UserRead)
-async def create_user(user: UserCreate, db: Session = Depends(get_db)):
+@user_router.post("/users/register", response_model=UserReadDTO)
+async def create_user(user: UserCreateDTO, db: Session = Depends(get_db)):
     existing_user = db.query(User).filter(User.username == user.username).first()
     if existing_user:
         raise HTTPException(status_code=400, detail="User already exists")
@@ -33,7 +33,7 @@ async def create_user(user: UserCreate, db: Session = Depends(get_db)):
         db.rollback()
         raise HTTPException(status_code=500, detail="Database error occurred")
 
-@user_router.get("/me", response_model=UserRead)
+@user_router.get("/me", response_model=UserReadDTO)
 async def get_present_user(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
