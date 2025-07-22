@@ -1,0 +1,52 @@
+# Python bytecode and cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
+.todo_app_venv/
+
+# Environment variables
+.env
+.env.*
+
+# VSCode or other IDE settings
+.vscode/
+.idea/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+
+# Database files
+*.sqlite3
+*.db
+
+# Docker artifacts
+*.pid
+*.sock
+docker-compose.override.yml
+
+# Pytest cache
+.pytest_cache/
+
+# Migrations (optional)
+migrations/
+
+# Coverage reports
+htmlcov/
+coverage.xml
+*.cover
+
+# __init__.py backup files
+*~ 
+
+# MyPy and Pylint cache
+.mypy_cache/
+.pylint.d/
