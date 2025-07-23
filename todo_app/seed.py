@@ -9,7 +9,7 @@ def populate_db():
     db: Session = SessionLocal()
     try:
         if db.query(User).count() == 0:
-            for i in range(5):
+            for i in range(1,6):
                 username = f"dummyuser{i}"
                 password = f"password{i}"
                 hashed_password = hash_password(password)
@@ -19,7 +19,8 @@ def populate_db():
                     age=25
                 )
 
-                db.flush(user)
+                db.add(user)
+                db.flush()
 
                 task = UserTask(
                     name="Welcome Task",
@@ -28,8 +29,8 @@ def populate_db():
                     user_id=user.id
                 )
                 db.add(task)
-
             db.commit()
+            print("Populated tables users and user_tasks.")
         else:
             print("SKipping populate_users because users database is not empty.")
     except SQLAlchemyError:

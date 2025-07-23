@@ -9,11 +9,11 @@ from .routes import router
 from .seed import seed_data
 
 @asynccontextmanager
-async def on_startup():
+async def on_startup(app: FastAPI):
     seed_data()
     yield
 
-app = FastAPI()
+app = FastAPI(lifespan=on_startup)
 
 app.include_router(task_router, prefix="/users/{userid}/tasks")
 app.include_router(user_router, prefix="/users")
