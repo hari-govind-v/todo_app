@@ -10,12 +10,9 @@ def populate_db():
     try:
         if db.query(User).count() == 0:
             for i in range(1,6):
-                username = f"dummyuser{i}"
-                password = f"password{i}"
-                hashed_password = hash_password(password)
                 user =  User(
-                    username=username,
-                    hashed_password=hashed_password,
+                    username=f"dummyuser{i}",
+                    hashed_password=hash_password(f"password{i}"),
                     age=25
                 )
 
