@@ -7,4 +7,5 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String)
+    age = Column(Integer)
     user_tasks = relationship("UserTask", back_populates="user")
