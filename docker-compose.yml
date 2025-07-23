@@ -24,8 +24,6 @@ services:
     environment:
       DATABASE_URL: postgresql+psycopg2://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:5432/${DB_NAME}
     command: >
-      python -m debugpy --listen 0.0.0.0:5678 --wait-for-client
-      -m uvicorn todo_app.app:app --host 0.0.0.0 --port 8000 --reload
-
+      uvicorn todo_app.app:app --host 0.0.0.0 --port 8000 --reload
 volumes:
   postgres_data:
