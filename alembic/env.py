@@ -4,6 +4,9 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from todo_app.core.config import settings, Base
 
+from todo_app.users.models import User
+from todo_app.tasks.models import UserTask
+
 from alembic import context
 
 # this is the Alembic Config object, which provides
