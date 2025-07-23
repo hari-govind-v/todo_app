@@ -1,11 +1,17 @@
 
 from fastapi import FastAPI
 from .core.config import Base, engine
-
+from contextlib import asynccontextmanager
 from .tasks.routes import task_router 
 from .users.routes import user_router
 from .auth.routes import auth_router
 from .routes import router
+from .seed import seed_data
+
+@asynccontextmanager
+async def on_startup():
+    seed_data()
+    yield
 
 app = FastAPI()
 
