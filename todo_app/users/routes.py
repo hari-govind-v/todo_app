@@ -12,10 +12,10 @@ user_router = APIRouter()
 @user_router.get("/", response_model=list[UserReadDTO])
 async def get_all_users(db: Session = Depends(get_db)):
     try:
-        tasks = db.query(User).all()
-        if not tasks: logging.info("No tasks present in db")
-        else: logging.info(f"Fetched {len(tasks)} tasks from db.")
-        return tasks
+        users = db.query(User).all()
+        if not users: logging.info("No tasks present in db")
+        else: logging.info(f"Fetched {len(users)} tasks from db.")
+        return users
     except SQLAlchemyError:
         raise HTTPException(status_code=500, detail="Failed to retrieve users")
 
