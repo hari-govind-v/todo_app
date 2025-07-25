@@ -1,16 +1,35 @@
-
 services:
-  seed:
-    build: .
-    command: ["python", "-m", "todo_app.core.seed"]
+  migration:
+    image: todo_app_web
+    command: alembic upgrade head
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       DB_HOST: db
       DB_PORT: 5432
       DB_NAME: postgres
       DB_USER: postgres
       DB_PASSWORD: password
+    volumes:
+      - .:/app
+    networks:
+      - todo_app_network
+
+  seed:
+    build: .
+    command: ["python", "-m", "todo_app.core.seed"]
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: postgres
+      DB_USER: postgres
+      DB_PASSWORD: password
+    networks:
+      - todo_app_network
 
   db:
     image: postgres:16
@@ -33,6 +52,7 @@ services:
 
   web:
     build: .
+    image: todo_app_web
     volumes:
       - .:/app
     depends_on:
@@ -43,11 +63,7 @@ services:
       DEBUG: "false"
     networks:
       - todo_app_network
-    command: >
-      sh -c "
-        alembic upgrade head &&
-        uvicorn todo_app.app:app --host 0.0.0.0 --port 8000 --reload;
-      "
+    command: uvicorn todo_app.app:app --host 0.0.0.0 --port 8000
 
   nginx:
     image: nginx:alpine
