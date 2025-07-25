@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from .models import User
 from todo_app.auth.utils import *
 from sqlalchemy.exc import SQLAlchemyError
+import logging
 
 user_router = APIRouter()
 
@@ -12,7 +13,8 @@ user_router = APIRouter()
 async def get_all_users(db: Session = Depends(get_db)):
     try:
         tasks = db.query(User).all()
-        if not tasks: print("no users in db")
+        if not tasks: logging.info("No tasks present in db")
+        else: logging.info(f"Fetched {len(tasks)} tasks from db.")
         return tasks
     except SQLAlchemyError:
         raise HTTPException(status_code=500, detail="Failed to retrieve users")
@@ -28,8 +30,10 @@ async def create_user(user: UserCreateDTO, db: Session = Depends(get_db)):
         db.add(new_user)
         db.commit()
         db.refresh(new_user)
+        logging.info(f"User {user.username} successfully logged in.")
         return new_user
     except SQLAlchemyError:
+        logging.info(f"User {user.username} could not log in due to database exception.")
         db.rollback()
         raise HTTPException(status_code=500, detail="Database error occurred")
 
