@@ -1,5 +1,4 @@
 from passlib.context import CryptContext
-import jwt
 from jwt.exceptions import InvalidTokenError
 from datetime import timedelta, timezone, datetime
 from fastapi.security import  OAuth2PasswordBearer
