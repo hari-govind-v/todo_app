@@ -8,5 +8,3 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install debugpy
 
 COPY . .
-
-EXPOSE 5678
