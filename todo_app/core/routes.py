@@ -1,12 +1,15 @@
-from fastapi import APIRouter, status, Request
+from fastapi import APIRouter, status, Request, Depends
 from fastapi.responses import JSONResponse
-from .config import settings
+from .config import settings, AppSettings
 import logging
 
 router = APIRouter()
 
+def get_settings():
+    return settings
+
 @router.get("/")
-async def home_page(request: Request):
+async def home_page(request: Request, settings: AppSettings = Depends(get_settings)):
     request_id = request.state.request_id
     logger = logging.getLogger("todo_app")
     if request_id:
